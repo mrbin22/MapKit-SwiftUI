@@ -14,7 +14,7 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
     
     @Published var transport: MKDirectionsTransportType = .any
     @Published var results: [MKMapItem] = []
-
+    @Published var transitTime: Int = 0
     static let dev: [Station] = [
         Station(name: "大久保", prefecture: "東京都", line: "JR総武線", x: 139.69732, y: 35.700784, postal: "1690073", distance: "220m", prev: nil, next: "新宿"),
         Station(name: "大久保", prefecture: "東京都", line: "JR総武線", x: 139.69732, y: 35.700784, postal: "1690073", distance: "220m", prev: nil, next: "新宿"),
@@ -84,6 +84,7 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
                     let etaResponse = try await directions.calculateETA() // 到着する予定
                     let etaSecond = etaResponse.expectedTravelTime // 行くには何秒かかるか
                     let etaMinutes = Int(etaSecond / 60)
+                    self.transitTime = etaMinutes
                     print("EAT:\(etaMinutes)")
                 } catch {
                     print("error: \(error.localizedDescription)")

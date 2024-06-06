@@ -21,6 +21,7 @@ struct HomeView: View {
         center: .jec,
         span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)))
     @State private var isShowSheet = false
+    @State private var isShowAlert = false
     @State private var selectedResult: MKMapItem?
     
     var body: some View {
@@ -119,10 +120,17 @@ struct HomeView: View {
                 
             }
         }
+        .alert("時刻表", isPresented: $isShowAlert, actions: {
+            Button("確認") {
+                isShowAlert.toggle()
+            }
+        }, message: {
+            Text("電車でかかる時間は: \(manager.transitTime)")
+        })
         
         .sheet(isPresented: $manager.isShowSheet, content: {
             
-            ListStationView(nearestStation: network.stations?.response.station ?? LocationManager.dev)
+            ListStationView(nearestStation: network.stations?.response.station ?? LocationManager.dev, isShowAlert: $isShowAlert)
         })
     }
     
