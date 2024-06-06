@@ -6,13 +6,71 @@
 //
 
 import SwiftUI
-
+import MapKit
 struct ListStationView: View {
+    var nearestStation: [Station]
+    @EnvironmentObject var vm: LocationManager
+    @State private var isShowAlert = false
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        List {
+            ForEach(nearestStation, id: \.self) { station in
+                Button(action: {
+                    
+                    if vm.transport == .transit {
+                        vm.isShowSheet = false
+                        // TODO: Alertで電車の時間を表示する
+                        print("時間を表示")
+                    } else {
+                        Task {
+                            await vm.calculateRoute(from: CLLocationCoordinate2D(latitude: vm.userLocation.latitude, longitude: vm.userLocation.longitude) ,to: CLLocationCoordinate2D(latitude: station.y, longitude: station.x), transportType: vm.transport)
+                        }
+                        vm.isShowSheet = false
+                    }
+                }, label: {
+                   selectStation(station: station)
+                })
+                
+            }
+        }
+        .listStyle(.insetGrouped)
     }
 }
 
 #Preview {
-    ListStationView()
+    ListStationView(nearestStation: LocationManager.dev)
+        .environmentObject(LocationManager())
+}
+
+extension ListStationView {
+    func selectStation(station: Station) -> some View {
+        VStack {
+            HStack {
+                Text("\(station.name)")
+                    .foregroundStyle(.red)
+                    .font(.title)
+                    .bold()
+                Text("(\(station.distance))")
+                    .font(.caption)
+                    .italic()
+                    .offset(y: 5)
+            }
+            .padding(.leading, 50)
+            HStack(spacing: nil) {
+                
+                Text(station.next)
+                    .foregroundStyle(.black)
+                    .font(.headline)
+                    .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
+                Spacer()
+                Image(systemName: "arrowshape.left.arrowshape.right.fill")
+                    .foregroundColor(.black)
+                    .frame(width: 30)
+                Spacer()
+                Text(station.prev ?? "終点")
+                    .foregroundStyle(.black)
+                    .font(.headline)
+                    .frame(minWidth: 0, maxWidth: .infinity, alignment: .trailing)
+            }
+        }
+    }
 }

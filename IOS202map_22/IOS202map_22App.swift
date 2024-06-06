@@ -9,9 +9,11 @@ import SwiftUI
 
 @main
 struct IOS202map_22App: App {
+    @StateObject var manager = LocationManager()
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            HomeView()
+                .environmentObject(manager)
         }
     }
 }
