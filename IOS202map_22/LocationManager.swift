@@ -23,6 +23,18 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
         
     ]
     
+    
+    // 35.80872144507752, 139.4466782203013
+    static let spots: [MenuSpotModel] = [
+        MenuSpotModel(title: "自宅", location: CLLocationCoordinate2D(latitude: 35.80872144507752, longitude: 139.4466782203013)),
+        MenuSpotModel(title: "レストラン", location: CLLocationCoordinate2D(latitude: 35.80872144507752, longitude: 139.4466782203013)),
+        MenuSpotModel(title: "コーヒー", location: CLLocationCoordinate2D(latitude: 35.80872144507752, longitude: 139.4466782203013)),
+        MenuSpotModel(title: "ショッピング", location: CLLocationCoordinate2D(latitude: 35.80872144507752, longitude: 139.4466782203013)),
+        MenuSpotModel(title: "アパレル", location: CLLocationCoordinate2D(latitude: 35.80872144507752, longitude: 139.4466782203013)),
+        MenuSpotModel(title: "ラーメン", location: CLLocationCoordinate2D(latitude: 35.80872144507752, longitude: 139.4466782203013)),
+        MenuSpotModel(title: "駐車場", location: CLLocationCoordinate2D(latitude: 35.80872144507752, longitude: 139.4466782203013))
+    ]
+    
     @Published var region = MKCoordinateRegion()
     @Published var mapLocation = CLLocationCoordinate2D()
     @Published var xPosition: CGFloat = 0
@@ -39,6 +51,9 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
         manager.distanceFilter = 2
         manager.startUpdatingLocation()
         mapLocation = region.center
+        
+        
+        
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {

@@ -47,7 +47,7 @@ struct ItemInfoView: View {
             Button(action: {
                 // 現在地から目的までのルートを表示する
                 Task {
-                    await manager.calculateRoute(from: currentLocation,to: mapSelection?.placemark.coordinate ?? CLLocationCoordinate2D(),transportType: .automobile)
+                    await manager.calculateRoute(from: manager.region.center,to: mapSelection?.placemark.coordinate ?? CLLocationCoordinate2D(),transportType: .automobile)
                 }
                 
             }, label: {

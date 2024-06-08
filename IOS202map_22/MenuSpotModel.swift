@@ -12,5 +12,5 @@ import MapKit
 struct MenuSpotModel: Identifiable {
     let id = UUID().uuidString
     var title: String
-    var location: CLLocationCoordinate2D
+    var location: CLLocationCoordinate2D?
 }
